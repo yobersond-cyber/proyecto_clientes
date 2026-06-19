@@ -1,52 +1,20 @@
-from fastapi import FastAPI,HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI
 
 app= FastAPI ()
 
-class Cliente(BaseModel):
-    id: int
-    nombre: str
-    correo: str
-    descripcion: str
-
-class Factura(BaseModel):
-    id: int
-    fecha: str
-    Valortotal: float
-    cliente_id: int
-
-class Transaccion(BaseModel):
-    id: int
-    metodo_pago: str
-    monto: float
-    factura_id: int
-
-clientes = []
-facturas = []
-transacciones = []
+lista_clientes = [
+    {"id": 1, "nombre": "Lady", "email": "lady@gmail.com", "edad": 22, "descripcion": "NA"},
+    {"id": 2, "nombre": "Luis", "email": "luis@gmail.com", "edad": 19, "descripcion": "NA"},
+    {"id": 3, "nombre": "Ana", "email": "ana@gmail.com", "edad": 23, "descripcion": "Cliente frecuente"},
+    {"id": 4, "nombre": "Carlos", "email": "carlos@gmail.com", "edad": 25, "descripcion": "Cliente nuevo"},
+    {"id": 5, "nombre": "Sofía", "email": "sofia@gmail.com", "edad": 21, "descripcion": "NA"},
+    {"id": 6, "nombre": "Andrés", "email": "andres@gmail.com", "edad": 28, "descripcion": "Cliente activo"}
+ ]
 
 #endpoints 
-
-@app.get ("/proyecto")
-
-def mensaje ():
-    return{"proyecto": "este es el proyecto de clientes a desarrollar"}
-
-
-lista_clientes= ["Ricardo","yoberson","quiroga","daniela","ana","kamila","zuelima,"]
-@app.get ("/clientes")
-def clientes ():
-    return {"clientes": lista_clientes} 
-
-# Buscar cliente por ID
-
-@app.get("/clientes/{id}")
-def obtener_cliente(id: int):
-    for cliente in clientes:
-        if cliente.id == id:
-            return cliente
-
-    raise HTTPException(404, "Cliente no encontrado")
+@app.get ("/")
+def listar_clientes ():
+    return lista_clientes
 
 
 
