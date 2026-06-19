@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 
 app= FastAPI ()
 
@@ -35,6 +36,16 @@ lista_clientes = [
 @app.get ("/")
 def listar_clientes ():
     return lista_clientes
+
+#endpoint listar un cliente
+@app.get("/clientes/{cliente_id}")
+def listar_cliente(cliente_id: int):
+    for i, obj_client in enumerate (lista_clientes):
+        if obj_client.get("id") == cliente_id:
+            return obj_client
+        
+
+
 
 
 
