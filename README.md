@@ -105,4 +105,3 @@ Endpoints disponibles:
 
 - `/proyecto`
 - `/clientes`
-

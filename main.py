@@ -16,6 +16,9 @@ class Factura(BaseModel):
     vrtotal: float
 
 
+
+
+
 class Transaccion(BaseModel):
     id: int
     vr_unitario: float
@@ -33,12 +36,12 @@ lista_clientes: list [Cliente] = [
  ]
 
 #endpoints 
-@app.get ("/")
+@app.get ("/lista de clientes", response_model=list [Cliente])
 def listar_clientes ():
     return lista_clientes
 
 #endpoint listar un cliente
-@app.get("/clientes/{cliente_id}")
+@app.get("/clientes/{cliente_id}", response_model=Cliente)
 def listar_cliente(cliente_id: int):
     for i, obj_client in enumerate (lista_clientes):
         if obj_client.get("id") == cliente_id:
@@ -46,7 +49,7 @@ def listar_cliente(cliente_id: int):
         
 
 #endpoint para crear un cliente, y agregarlo a al lista 
-@app.post("/clientes")
+@app.post("/crear cliente", response_model=Cliente)
 def crear_cliente(datos_cliente: Cliente):
     lista_clientes.append(datos_cliente) 
     return datos_cliente 
