@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from cliente import cliente
 
 class facturasbase (BaseModel):
     fecha: str
@@ -6,6 +7,9 @@ class facturasbase (BaseModel):
     cliente: cliente
 
 class factuacrear (facturasbase):
+    pass
+
+class facturaeditar (facturasbase):
     pass
 
 

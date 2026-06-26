@@ -8,5 +8,8 @@ class transaccionbase (BaseModel):
 class transaccioncrear(transaccionbase):
     pass
 
+class transaccioneditar (transaccionbase):
+    pass
+
 class Transaccion (transaccionbase):
     id: int | None = None 
