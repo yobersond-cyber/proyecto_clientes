@@ -11,7 +11,18 @@ class facturasbase (BaseModel):
     @computed_field
     @property
     def val_total(self) -> float:
-        return 222
+        # valor total factura (cantidad * valos unit)
+        # consultar el id actual de la factura 
+        factura_id_actual = getattr(self, "id", None)
+        total_factura = 0.0
+        if not factura_id_actual or not self.transacciones:
+            return total_factura
+        #recorrer la lista de trasacciones con el id de factrura
+        for transacciones in self.transacciones:
+            if Transaccion.factura_id == factura_id_actual:
+                total_factura += Transaccion.val_unitario * Transaccion.cantidad
+        return total_factura
+
 
 class facturacrear (facturasbase):
     pass

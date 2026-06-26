@@ -69,7 +69,7 @@ async def listar_facturas ():
     return lista_facturas
 
 
-@app.get ("/facturas/{factura_id}", response_model= Factura)
+@app.get ("/facturas/{cliente_id}", response_model= Factura)
 async def listar_facturas (factura_id: int):
     for i, obj_factura in enumerate (lista_facturas):
         if obj_factura.id == factura_id:
@@ -79,8 +79,8 @@ async def listar_facturas (factura_id: int):
     )
 
 
-@app.post ("/facturas/{cliente_id}", response_model= facturacrear)
-async def crear_factura (cliente_id: int, datos_factura: Factura):
+@app.post ("/facturas/{cliente_id}", response_model= Factura)
+async def crear_factura (cliente_id: int, datos_factura: facturacrear):
     #buscar el cliente
     cliente_encontrado = None
     for cliente in lista_clientes:
@@ -92,11 +92,13 @@ async def crear_factura (cliente_id: int, datos_factura: Factura):
         status_code=status.HTTP_400_BAD_REQUEST, detail=f"el cliente con id {cliente_id}, no existe."
         )  
 
+
         #validar datos de la factura
         factura_val = Factura.model_validate(datos_factura.model_dump())
         factura_val.cliente = cliente_encontrado
         #id de la factura
-        factura_val.id = len (lista_facturas)+1  
+        factura_val.id = len (lista_facturas) +1  
+        lista_facturas.append (factura_val)
         return factura_val
 
 
@@ -124,9 +126,26 @@ async def listar_transacciones ():
 async def listar_transacciones (id_transacciones: int):
     pass
 
-@app.post ("/transacciones/{transacciones_id}", response_model= Transaccion)
-async def crear_transacciones (id_transacciones: int, datos_transacciones: Transaccion):
-    pass
+@app.post ("/transacciones/{factura_id}", response_model= Transaccion)
+async def crear_transacciones (factura_id: int, datos_transacciones: transaccioncrear):
+    #buscar una factura
+    factura_encontrada = None
+    for factura in lista_facturas:
+        if factura.id == factura_id:  
+            factura_encontrada =  factura 
+        
+        if not factura_encontrada:
+          raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST, detail=f"La factura con id {factura_id}, no existe."
+        )  
+
+        #validar datos de la transaccion
+        transaccion_val = Transaccion.model_validate(datos_transacciones.model_dump())
+        transaccion_val.factura_id = factura_id
+        factura_encontrada.transacciones.append(transaccion_val)
+        #id de la transaccion
+        transaccion_val.id  = len (lista_transacciones) + 1     
+        return transaccion_val
 
 @app.patch ("/transacciones/{transacciones_id}", response_model= Transaccion)
 async def editar_transacciones (id_transacciones: int, datos_transacciones: Transaccion):
