@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, status
-from Modelos.cliente import cliente, clientecrear, clienteeditar
-from Modelos.facturas import Factura, facturacrear, facturaeditar
-from Modelos.transacciones import Transaccion, transaccioncrear, transaccioneditar
+from .Modelos.cliente import cliente, clientecrear, clienteeditar
+from .Modelos.facturas import Factura, facturacrear, facturaeditar
+from .Modelos.transacciones import Transaccion, transaccioncrear, transaccioneditar
 
 
 app= FastAPI ()
@@ -145,6 +145,7 @@ async def crear_transacciones (factura_id: int, datos_transacciones: transaccion
         factura_encontrada.transacciones.append(transaccion_val)
         #id de la transaccion
         transaccion_val.id  = len (lista_transacciones) + 1     
+        lista_transacciones.append (transaccion_val)
         return transaccion_val
 
 @app.patch ("/transacciones/{transacciones_id}", response_model= Transaccion)
