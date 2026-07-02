@@ -19,8 +19,8 @@ class facturasbase (BaseModel):
             return total_factura
         #recorrer la lista de trasacciones con el id de factrura
         for transacciones in self.transacciones:
-            if Transaccion.factura_id == factura_id_actual:
-                total_factura += Transaccion.val_unitario * Transaccion.cantidad
+            if transacciones.factura_id == factura_id_actual:
+                total_factura += transacciones.val_unitario * transacciones.cantidad
         return total_factura
 
 
